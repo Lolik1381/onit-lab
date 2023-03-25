@@ -32,7 +32,8 @@ fun SearchComponent(
     ) {
         Column {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(ComponentConstants.DEFAULT_PADDING),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -62,6 +63,20 @@ fun SearchComponent(
                 ) {
                     Text(text = "Найти")
                 }
+            }
+
+            Row(
+                modifier = Modifier.padding(ComponentConstants.DEFAULT_PADDING),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = appViewModel.isRegexSearch,
+                    onCheckedChange = { appViewModel.isRegexSearch = it }
+                )
+                Text(
+                    text = "Использовать регулярное выражение при поиске?",
+                    modifier = Modifier.clickable { appViewModel.isRegexSearch = !appViewModel.isRegexSearch }
+                )
             }
 
             Row(

@@ -15,7 +15,7 @@ class LinkSearchStrategy(
     private val emlParserService: EmlParserService
 ) : SearchStrategy {
 
-    override fun search(text: String, homeDirectory: String) {
+    override fun search(text: String, homeDirectory: String, isRegexSearch: Boolean) {
         val directoryFiles = fileService.openEmlDirectory(homeDirectory, listOf("eml"))
 
         val session = Session.getDefaultInstance(Properties(), null)
@@ -31,7 +31,7 @@ class LinkSearchStrategy(
             val match = """\<a href[ ]*=[ ]*\"(.*?${text}.*?)\"""".toRegex().find(htmlText)
 
             if (match != null) {
-                file.copyTo(File(combinePath(file.name, homeDirectory, SEARCH_OUTPUT_DIR, "linkSearch")))
+                file.copyTo(File(combinePath(file.name, homeDirectory, SEARCH_OUTPUT_DIR, "linkSearch")), overwrite = true)
             }
         }
     }

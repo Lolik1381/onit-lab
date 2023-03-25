@@ -34,6 +34,7 @@ class AppViewModel {
 
     private var _isFindLink =  mutableStateOf(false)
     private var _isFindText = mutableStateOf(false)
+    private val _isRegexSearch = mutableStateOf(false)
 
     private var _sortTime = mutableStateOf(0L)
 
@@ -61,6 +62,12 @@ class AppViewModel {
         get() = _isFindText.value
         set(value) {
             _isFindText.value = value
+        }
+
+    var isRegexSearch: Boolean
+        get() = _isRegexSearch.value
+        set(value) {
+            _isRegexSearch.value = value
         }
 
     var searchText: String
@@ -109,11 +116,11 @@ class AppViewModel {
         fileService.removeFilesInDirectory(combinePath(directories = arrayOf(homeFolder, SEARCH_OUTPUT_DIR)))
 
         if (isFindText) {
-            textSearchStrategy.search(searchText, homeFolder)
+            textSearchStrategy.search(searchText, homeFolder, isRegexSearch)
         }
 
         if (isFindLink) {
-            linkSearchStrategy.search(searchText, homeFolder)
+            linkSearchStrategy.search(searchText, homeFolder, isRegexSearch)
         }
     }
 }
