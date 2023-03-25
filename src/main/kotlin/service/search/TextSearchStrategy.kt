@@ -15,7 +15,7 @@ class TextSearchStrategy(
     private val emlParserService: EmlParserService
 ) : SearchStrategy {
 
-    override fun search(text: String, homeDirectory: String) {
+    override fun search(text: String, homeDirectory: String, isRegexSearch: Boolean) {
         val directoryFiles = fileService.openEmlDirectory(homeDirectory, listOf("eml"))
 
         val session = Session.getDefaultInstance(Properties(), null)
@@ -29,8 +29,8 @@ class TextSearchStrategy(
                 else -> ""
             }
 
-            if (emailText.contains(text, ignoreCase = true)) {
-                file.copyTo(File(combinePath(file.name, homeDirectory, SEARCH_OUTPUT_DIR, "textSearch")))
+            if ((isRegexSearch && text.toRegex().find(emailText)?.value != null) || (!isRegexSearch && emailText.contains(text, ignoreCase = true))) {
+                file.copyTo(File(combinePath(file.name, homeDirectory, SEARCH_OUTPUT_DIR, "textSearch")), overwrite = true)
             }
         }
     }
